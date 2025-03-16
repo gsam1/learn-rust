@@ -1,13 +1,19 @@
 fn trim_me(input: &str) -> &str {
     // TODO: Remove whitespace from both ends of a string.
+    input.trim()
 }
 
 fn compose_me(input: &str) -> String {
     // TODO: Add " world!" to the string! There are multiple ways to do this.
+    let owned_str = input.to_owned();
+    let string_to_add = " world!";
+    owned_str + string_to_add
 }
 
 fn replace_me(input: &str) -> String {
     // TODO: Replace "cars" in the string with "balloons".
+    let owned_input = input.to_owned();
+    owned_input.replace("cars", "balloons")
 }
 
 fn main() {
