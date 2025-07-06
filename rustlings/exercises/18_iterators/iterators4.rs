@@ -10,10 +10,30 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+    let mut total_product = 1;
+    for n in 0..num+1 {
+        if n == 0 {
+            total_product = total_product * 1;
+        } else {
+            total_product = total_product * n;
+        }
+    }
+    total_product
 }
 
 fn main() {
     // You can optionally experiment here.
+    let mut total_product = 1;
+    let num = 2;
+    for n in 0..num+1 {
+        if n == 0 {
+            total_product = total_product * 1;
+            println!("{}", total_product);
+        } else {
+            total_product = total_product * n;
+            println!("{}", total_product);
+        }
+    }
 }
 
 #[cfg(test)]
