@@ -35,11 +35,32 @@ impl Default for Person {
 // 6. If parsing the age fails, return the default of `Person`.
 impl From<&str> for Person {
     fn from(s: &str) -> Self {
-        let splits = s.split(",");
-        let collection: Vec<&str> = splits.collect();
-        let name = 
+        let splits: Vec<&str> = s.split(",").collect();
+        
+        if splits.len() == 2 {
+            let name = splits[0].trim().to_string();
+            let age_str = splits[1].trim();
 
+            if name.is_empty() {
+                return Self::default();
+            }
+
+            match age_str.parse::<u8>() {
+                Ok(age_value) => {
+                    // Success: Use the parsed age and name
+                    Self { name, age: age_value }
+                }
+                Err(_) => {
+                    // Failure: Return the default struct
+                    Self::default()
+                }
+            }
+
+        } else {
+            Self::default()
+        }
     }
+
 }
 
 fn main() {
@@ -50,6 +71,9 @@ fn main() {
     // Since `From` is implemented for Person, we are able to use `Into`.
     let p2: Person = "Gerald,70".into();
     println!("{p2:?}");
+
+    let p3: Person = "Pesho,".into();
+    println!("{p3:?}");
 }
 
 #[cfg(test)]
