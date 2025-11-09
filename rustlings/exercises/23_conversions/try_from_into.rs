@@ -28,14 +28,30 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let r = tuple.0.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let g = tuple.1.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let b = tuple.2.try_into().map_err(|_| IntoColorError::IntConversion)?;
+
+        Ok(Color { red: r, green: g, blue: b })
+    }
 }
 
 // TODO: Array implementation.
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        if arr.len() != 3 {
+            return Err(IntoColorError::BadLen)
+        }
+
+        let r = arr[0].try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let g = arr[1].try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let b = arr[2].try_into().map_err(|_| IntoColorError::IntConversion)?;
+
+        Ok(Color { red: r, green: g, blue: b })
+    }
 }
 
 // TODO: Slice implementation.
@@ -43,7 +59,28 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen)
+        }
+
+        let r = slice[0]
+            .try_into()
+            .map_err(|_| IntoColorError::IntConversion)?;
+
+        // Element 1 (Green)
+        let g = slice[1]
+            .try_into()
+            .map_err(|_| IntoColorError::IntConversion)?;
+
+        // Element 2 (Blue)
+        let b = slice[2]
+            .try_into()
+            .map_err(|_| IntoColorError::IntConversion)?;
+
+        // Step 3: Return the Color struct
+        Ok(Color { red: r, green: g, blue: b })
+    }
 }
 
 fn main() {
